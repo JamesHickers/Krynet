@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🛠️ Krynet Source Repository
+# 🛠️ Krynet Source Repository - Source Branch
 
 **Official Source Code for All Platforms**  
 *Build any platform from source • Full transparency • AGPL-3.0 Licensed*
@@ -20,173 +20,114 @@
 
 | Platform | Build Status | Precompiled |
 |----------|--------------|-------------|
-| **Windows** | 🔨 **Source Available** (MinGW64) | ❌ Unavailable |
-| **macOS** | 🔨 **Source Available** (Xcode/CMake) | ❌ Unavailable |
-| **iOS** | 🔨 **Source Available** (Xcode) | ❌ Unavailable |
-| **Linux** | 🔨 **Source Available** (+ Precompiled) | ✅ Available |
-| **Android** | 🔨 **Source Available** (+ Precompiled) | ✅ Available |
+| **Windows** | 🔨 **Source Available** (MinGW64) | ❌ **Unavailable** |
+| **macOS** | 🔨 **Source Available** (Xcode/CMake) | ❌ **Unavailable** |
+| **iOS** | 🔨 **Source Available** (Xcode) | ❌ **Unavailable** |
+| **Linux** | 🔨 **Source Available** (+ Precompiled) | ✅ **Available** |
+| **Android** | 🔨 **Source Available** (+ Precompiled) | ✅ **Available** |
 
-**All platforms fully buildable from source!**
+**Linux & Android: Precompiled binaries ready. Others: Build from source only.**
 
 ---
 
-## 🚀 Quick Start - Build Any Platform
+## 📂 Platform Source Folders
+
+| Platform | Source Path |
+|----------|-------------|
+| **Windows** | [Source/Windows](https://github.com/JamesHickers/Krynet/tree/Source/Windows) |
+| **Linux** | [Source/Linux](https://github.com/JamesHickers/Krynet/tree/Source/Linux) |
+| **Android** | [Source/Android](https://github.com/JamesHickers/Krynet/tree/Source/Android) |
+| **iOS** | `Source/iOS` |
+| **macOS** | `Source/macOS` |
+
+---
+
+## 🚨 **Required External SDKs** *(Not Included)*
+
+**⚠️ Sciter SDK NOT bundled** (always latest version):
+
+| SDK | Download | Usage |
+|-----|----------|-------|
+| **Sciter.JS** | [![Sciter](https://sciter.com/)](https://sciter.com/) | **All platforms** |
+| **Ultralight** | [![Ultralight](https://ultralig.ht/)](https://ultralig.ht/) | **Alternative renderer** |
+
+**Setup:**
+```bash
+cd Source/Windows    # or Linux, Android, etc.
+mkdir -p thirdparty/sciter
+# Download Sciter SDK → extract here
+```
+
+---
+
+## 🚀 Quick Start - Build From Source Branch
 
 ```bash
-# Clone full repo with submodules
-git clone --recursive https://github.com/Krynet-LLC/Krynet.git
+# Clone Source branch
+git clone -b Source https://github.com/JamesHickers/Krynet.git
 cd Krynet
 
-# Unified build system
-./build.sh --platform=windows    # or linux, ios, android
-# Output: platform-specific binaries
+# Platform builds
+cd Source/Windows && make release      # Windows (source only)
+cd Source/Linux  && ./build.sh         # Linux (precompiled available)
+cd Source/Android && ./gradlew assembleRelease  # Android (precompiled available)
 ```
 
 ---
 
 ## 🏗️ Platform-Specific Builds
 
-### 🪟 **Windows** (MinGW64)
+### 🪟 **Windows** `[Source/Windows](https://github.com/JamesHickers/Krynet/tree/Source/Windows)`
 ```bash
-cd platforms/windows
+cd Source/Windows
+mkdir -p thirdparty/sciter && # Add Sciter SDK
 make clean && make release
-# Output: Krynet.exe
-```
-**Requires:** MinGW64 (gcc/g++ 12+), Sciter.JS SDK
-
-### 🍎 **macOS** (CMake/Xcode)
-```bash
-cd platforms/macos
-mkdir build && cd build
-cmake .. -DCMAKE_BUILD_TYPE=Release
-make -j8
-# Output: Krynet.app
+# → Krynet.exe
 ```
 
-### 📱 **iOS** (Xcode)
+### 🐧 **Linux** `[Source/Linux](https://github.com/JamesHickers/Krynet/tree/Source/Linux)`
 ```bash
-cd platforms/ios
-open Krynet.xcodeproj
-# Sign → Archive → Export IPA
-```
-
-### 🐧 **Linux** (Any distro)
-```bash
-cd platforms/linux
+cd Source/Linux
 ./build.sh --release
-# Output: Krynet.AppImage + deb/rpm
+# → Krynet.AppImage (precompiled also available)
 ```
-**glibc 2.31+ • AppImage universal**
 
-### 🤖 **Android** (Gradle)
+### 🤖 **Android** `[Source/Android](https://github.com/JamesHickers/Krynet/tree/Source/Android)`
 ```bash
-cd platforms/android
+cd Source/Android
 ./gradlew assembleRelease
-# Output: app/build/outputs/apk/release/krynet.apk
+# → krynet.apk (precompiled also available)
 ```
 
 ---
 
-## 📁 Repository Structure
+## ✅ Built Features
 
 ```
-krynet/
-├── src/
-│   ├── core/          # WebSocket/REST/WebTransport
-│   ├── crypto/        # TLS + protocol layers
-│   ├── ui/            # Sciter HTML/CSS/JS
-│   └── platforms/     # Platform-specific code
-├── thirdparty/        # Sciter.JS, LuaJIT, libs
-├── CMakeLists.txt     # Cross-platform build
-└── build.sh           # Unified build script
-```
-
----
-
-## 🛠️ Compiler Requirements
-
-| Platform | Primary Build | Minimum Version |
-|----------|---------------|-----------------|
-| **Windows** | MinGW64 | gcc/g++ 12.0 |
-| **macOS** | Xcode/CMake | Xcode 15 / clang 15 |
-| **iOS** | Xcode | iOS 15+ target |
-| **Linux** | gcc/clang | gcc 11+ / glibc 2.31 |
-| **Android** | Gradle/NDK | NDK r25+ |
-
-**All platforms:** Sciter.JS SDK required
-
----
-
-## ✅ What You Get When Built
-
-```
-🔹 WebSocket gateway → wss://gateway.krynet.ai
-🔹 REST APIs → /api/v1/*
+🔹 wss://gateway.krynet.ai → Real-time
+🔹 REST APIs → Platform services
 🔹 WebTransfer → Files/media
-🔹 WebTransport → Screenshare (HTTP/3)
-🔹 TLS 1.3 → All traffic encrypted
-🔹 Sciter rendering → Native performance
-🔹 Cross-platform audio/notifications
+🔹 WebTransport → Screenshare
+🔹 TLS 1.3 → Full encryption
+🔹 Sciter → Native performance
 ```
-
----
-
-## 🔗 Feature Complete
-
-| Feature | Status |
-|---------|--------|
-| **Real-time messaging** | ✅ |
-| **Voice/Video calls** | ✅ |
-| **Screensharing** | ✅ (WebTransport) |
-| **File transfers** | ✅ (WebTransfer) |
-| **E2EE** | ✅ (Double layer) |
-| **Plugins/Mods** | ✅ |
-| **Privacy tools** | ✅ |
 
 ---
 
 ## 📜 AGPL-3.0 License
-
 ```
-✅ Full source modification allowed
-✅ Distribution allowed (with source)
-✅ Network use requires source publication
-✅ Commercial use OK (AGPL terms)
-❌ Cannot make proprietary derivative
+✅ Modify -  Distribute -  Commercial OK
+✅ Network use → Share source
+❌ No proprietary forks
 ```
-
-**Krynet servers remain proprietary.**
-
----
-
-## 🎯 Development Workflow
-
-```bash
-# Development build (hot reload)
-./build.sh --dev --platform=linux
-
-# Test
-./Krynet --test
-
-# Package
-./package.sh --platform=windows
-```
-
-**Hot reload:** Sciter UI changes instantly during dev.
-
----
-
-## 🔗 Official Resources
-
-- [Krynet.ai](https://krynet.ai)
-- [Precompiled Downloads](https://github.com/Krynet-LLC/Krynet/releases)
-- [Documentation](https://krynet.ai/docs)
 
 ---
 
 <div align="center">
 
-**🔒 Krynet Source © 2030**  
-*Build it yourself. Own your client. Stay private.*
+**🔒 Krynet Source Branch © 2030**  
+*Linux/Android precompiled. Windows/macOS/iOS: Build from source.*
 
-<sub>AGPL-3.0 • Sciter-powered • Fully buildable across all platforms.</sub>
+<sub>AGPL-3.0 • [sciter.com](https://sciter.com/) SDK required • [JamesHickers/Krynet](https://github.com/Krynet-LLC/Krynet/tree/Source)</sub>
+
+</div>

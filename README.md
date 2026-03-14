@@ -1,4 +1,4 @@
-dd<div align="center">
+<div align="center">
 
 # 🛠️ Krynet Source Repository - Source Branch
 
@@ -132,10 +132,7 @@ open ../Krynet.dmg
 ✅ Modify -  Distribute -  Commercial OK
 ✅ Network use → Share source
 ❌ No proprietary forks
-```
-
 ---
-
 <div align="center">
 
 **🔒 Krynet Source Branch © 2030**  

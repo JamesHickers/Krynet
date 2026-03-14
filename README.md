@@ -1,4 +1,4 @@
-<div align="center">
+dd<div align="center">
 
 # 🛠️ Krynet Source Repository - Source Branch
 
@@ -77,29 +77,54 @@ cd Source/Android && ./gradlew assembleRelease  # Android (precompiled available
 
 ## 🏗️ Platform-Specific Builds
 
-### 🪟 **Windows** `[Source/Windows](https://github.com/JamesHickers/Krynet/tree/Source/Windows)`
+### 🪟 **Windows**
 ```bash
 cd Source/Windows
-mkdir -p thirdparty/sciter && # Add Sciter SDK
+mkdir -p /sciter && # Add Sciter SDK
 make clean && make release
 # → Krynet.exe
 ```
 
-### 🐧 **Linux** `[Source/Linux](https://github.com/JamesHickers/Krynet/tree/Source/Linux)`
+### 🐧 **Linux**
 ```bash
 cd Source/Linux
 ./build.sh --release
 # → Krynet.AppImage (precompiled also available)
 ```
 
-### 🤖 **Android** `[Source/Android](https://github.com/JamesHickers/Krynet/tree/Source/Android)`
+### 🤖 **Android**
 ```bash
 cd Source/Android
 ./gradlew assembleRelease
 # → krynet.apk (precompiled also available)
 ```
 
+### 📱 **iOS**
+```bash
+cd Source/iOS
+# 1. Add Sciter.Lite SDK to /sciter/
+# 2. Drag libSciterLit.a → Xcode project
+open Krynet.xcodeproj
+
+# In Xcode:
+# → Select "Krynet" target
+# → Signing & Capabilities → Add your Apple ID
+# → Product → Archive
+# → Distribute App → Ad Hoc / Development → Export IPA
+# → krynet.ipa ✅
 ---
+### 🍎 **macOS**
+```bash
+cd Source/macOS
+mkdir build && cd build
+# 1. Add Sciter.JS SDK to /sciter/
+
+# CMake build
+cmake .. -DSCITER_PATH=/sciter -DCMAKE_BUILD_TYPE=Release
+make -j8
+open ../Krynet.dmg
+# → Krynet.app inside DMG ✅
+
 
 ## ✅ Built Features
 

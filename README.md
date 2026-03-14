@@ -30,18 +30,6 @@ dd<div align="center">
 
 ---
 
-## 📂 Platform Source Folders
-
-| Platform | Source Path |
-|----------|-------------|
-| **Windows** | [Source/Windows](https://github.com/JamesHickers/Krynet/tree/Source/Windows) |
-| **Linux** | [Source/Linux](https://github.com/JamesHickers/Krynet/tree/Source/Linux) |
-| **Android** | [Source/Android](https://github.com/JamesHickers/Krynet/tree/Source/Android) |
-| **iOS** | `Source/iOS` |
-| **macOS** | `Source/macOS` |
-
----
-
 ## 🚨 **Required External SDKs** *(Not Included)*
 
 **⚠️ Sciter SDK NOT bundled** (always latest version):

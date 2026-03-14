@@ -1,4 +1,3 @@
-```markdown
 <div align="center">
 
 # 🚀 Krynet.ai — 2030 Preview 🔒
@@ -64,4 +63,3 @@ F-Droid • AltStore • Web installer
 <sub>Made with ❤️ worldwide. Crypto donations welcome.</sub>
 
 </div>
-```

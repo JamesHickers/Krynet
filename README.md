@@ -39,9 +39,9 @@ Stripe • Apple Pay • Google Pay • **Crypto**
 Premium perks • Enterprise API • UGC dashboards
 
 ## 🏢 **Global Ownership**  
-🇮🇸 **BLACK/0, Inc** (Iceland privacy foundation)  
+🇮🇸 **BLACK/0, Inc** (Iceland security & privacy foundation)  
 🇸🇪 **Krynet, LLC** (Sweden core dev)  
-🇦🇪 **Bloodware, Inc** (security) • 🇹🇼 **Dead Lantern Games**  
+🇹🇼 **Dead Lantern Games**  
 
 ## 🌍 **Impact**  
 Food banks • STEM scholarships • Disaster relief • Tree planting  

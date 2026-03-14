@@ -124,7 +124,6 @@ open ../Krynet.dmg
 🔹 TLS 1.3 → Full encryption
 🔹 Sciter → Native performance
 ```
-```
 ## 📜 AGPL-3.0 License
 ---
 

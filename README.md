@@ -1,4 +1,4 @@
-<div align="center">
+[<div align="center">
 
 # 🛠️ Krynet Source Repository
 
@@ -181,7 +181,6 @@ krynet/
 - [Krynet.ai](https://krynet.ai)
 - [Precompiled Downloads](https://github.com/Krynet-LLC/Krynet/releases)
 - [Documentation](https://krynet.ai/docs)
-- [Community Ports](https://github.com/JamesHickers/Krynet-ports)
 
 ---
 
@@ -191,5 +190,3 @@ krynet/
 *Build it yourself. Own your client. Stay private.*
 
 <sub>AGPL-3.0 • Sciter-powered • Fully buildable across all platforms.</sub>
-
-</div>

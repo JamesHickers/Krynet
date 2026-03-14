@@ -112,18 +112,16 @@ cmake .. -DSCITER_PATH=/sciter -DCMAKE_BUILD_TYPE=Release
 make -j8
 open ../Krynet.dmg
 # → Krynet.app inside DMG ✅
-
-
-## ✅ Built Features
-
 ```
+```
+```
+## ✅ Built Features
 🔹 wss://gateway.krynet.ai → Real-time
 🔹 REST APIs → Platform services
 🔹 WebTransfer → Files/media
 🔹 WebTransport → Screenshare
 🔹 TLS 1.3 → Full encryption
 🔹 Sciter → Native performance
-```
 ## 📜 AGPL-3.0 License
 ---
 

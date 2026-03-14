@@ -138,6 +138,6 @@ open ../Krynet.dmg
 **🔒 Krynet Source Branch © 2030**  
 *Linux/Android precompiled. Windows/macOS/iOS: Build from source.*
 
-<sub>AGPL-3.0 • [sciter.com](https://sciter.com/) SDK required • [JamesHickers/Krynet](https://github.com/Krynet-LLC/Krynet/tree/Source)</sub>
+<sub>AGPL-3.0 • [sciter.com](https://sciter.com/) SDK required • [Krynet](https://github.com/Krynet-LLC/Krynet/tree/Source)</sub>
 
 </div>

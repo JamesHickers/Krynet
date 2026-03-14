@@ -20,9 +20,9 @@
 
 | Platform | Build Status | Precompiled |
 |----------|--------------|-------------|
-| **Windows** | 🔨 **Source Available** (MinGW64) | ✅ Available |
-| **macOS** | 🔨 **Source Available** (Xcode/CMake) | ✅ Available |
-| **iOS** | 🔨 **Source Available** (Xcode) | ✅ Available |
+| **Windows** | 🔨 **Source Available** (MinGW64) | ❌ Unavailable |
+| **macOS** | 🔨 **Source Available** (Xcode/CMake) | ❌ Unavailable |
+| **iOS** | 🔨 **Source Available** (Xcode) | ❌ Unavailable |
 | **Linux** | 🔨 **Source Available** (+ Precompiled) | ✅ Available |
 | **Android** | 🔨 **Source Available** (+ Precompiled) | ✅ Available |
 

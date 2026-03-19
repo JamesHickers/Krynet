@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🚀 Krynet.ai — 2030 Preview 🔒
+# 🚀 Krynet.ai — 2030 🔒
 
 **Secure. Private. Lightning-fast.**  
 *Next-generation messaging, voice, groups & communication platform.*  

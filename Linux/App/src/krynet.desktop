@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Krynet
+Exec=krynet
+Icon=krynet
+Categories=Network;
+Terminal=false

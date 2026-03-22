@@ -1,0 +1,19 @@
+<key>CFBundleIdentifier</key>
+<string>com.krynet.mac</string>
+<key>CFBundleName</key>
+<string>Krynet MacOS Client</string>
+<key>CFBundleVersion</key>
+<string>1.0.0</string>
+<key>CFBundleExecutable</key>
+<string>Krynet</string>
+<key>LSApplicationCategoryType</key>
+<string>public.app-category.social-networking</string>
+<key>NSMicrophoneUsageDescription</key>
+<string>Krynet requires access to the microphone for voice chat.</string>
+<key>NSCameraUsageDescription</key>
+<string>Krynet requires access to the camera for video chat.</string>
+<key>NSAppTransportSecurity</key>
+<dict>
+    <key>NSAllowsArbitraryLoads</key>
+    <true/>
+</dict>

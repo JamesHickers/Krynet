@@ -1,21 +1,51 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+
+  <!-- Application Identity -->
   <assemblyIdentity
-    version="1.0.0.0"
-    processorArchitecture="*"
     name="KrynetApp"
-    type="win32"/>
-  <description>Krynet Desktop</description>
+    type="win32"
+    version="1.0.0.0"
+    processorArchitecture="amd64"/>
+  <description>Krynet Desktop — Official Krynet.ai Client (x64)</description>
+
+  <!-- Security / UAC Settings -->
   <trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
     <security>
       <requestedPrivileges>
+        <!-- Run as normal user, no UAC prompt -->
         <requestedExecutionLevel level="asInvoker" uiAccess="false"/>
       </requestedPrivileges>
     </security>
   </trustInfo>
+
+  <!-- DPI Awareness / Display Scaling -->
   <application xmlns="urn:schemas-microsoft-com:asm.v3">
     <windowsSettings>
-      <dpiAware>true/pm</dpiAware>
+      <!-- Per-monitor DPI awareness v2 -->
+      <dpiAware xmlns="http://schemas.microsoft.com/SMI/2005/WindowsSettings">perMonitorV2</dpiAware>
     </windowsSettings>
   </application>
+
+  <!-- Visual Styles / Common Controls -->
+  <dependency>
+    <dependentAssembly>
+      <assemblyIdentity
+        type="win32"
+        name="Microsoft.Windows.Common-Controls"
+        version="6.0.0.0"
+        processorArchitecture="amd64"
+        publicKeyToken="6595b64144ccf1df"
+        language="*"/>
+    </dependentAssembly>
+  </dependency>
+
+  <!-- Explicit Device Capabilities -->
+  <application xmlns="urn:schemas-microsoft-com:asm.v3">
+    <windowsSettings>
+      <deviceCapability name="microphone"/>
+      <deviceCapability name="webcam"/>
+    </windowsSettings>
+  </application>
+
 </assembly>

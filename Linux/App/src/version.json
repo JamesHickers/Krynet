@@ -1,0 +1,19 @@
+{
+  "name": "Krynet Linux Client",
+  "version": "1.0.0",
+  "build": "20300322-001",
+  "arch": "x86_64",
+  "release_date": "2030-03-22T00:00:00Z",
+  "author": "Krynet LLC",
+  "platform": "Linux",
+  "privacy_mode": true,
+  "features": {
+    "always_online": true,
+    "client_only_version_check": true,
+    "tpm_support": true,
+    "microphone_support": true,
+    "camera_support": true,
+    "site_down_fallback": true,
+    "software_rendering": true
+  }
+}

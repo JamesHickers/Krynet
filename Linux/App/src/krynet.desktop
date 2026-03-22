@@ -1,7 +1,11 @@
 [Desktop Entry]
 Type=Application
 Name=Krynet
-Exec=krynet
-Icon=krynet
-Categories=Network;
-Terminal=false
+Comment=Official Krynet.ai Privacy-First Chat Client
+Exec=/opt/krynet/Krynet       # Full path to binary recommended
+Icon=/opt/krynet/assets/images/krynet.png
+Categories=Network;Chat;
+StartupNotify=true             # Shows feedback when starting
+Terminal=false                 # Do not open a terminal
+StartupWMClass=Krynet          # Optional: matches window class for desktop env
+MimeType=x-scheme-handler/krynet;  # Optional: handle krynet:// links

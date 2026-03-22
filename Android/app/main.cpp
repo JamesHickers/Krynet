@@ -19,6 +19,7 @@ const wchar_t* update_popup_html = LR"(
   <style>
     body { font-family: sans-serif; text-align: center; padding: 20px; background: #f9f9f9; }
     h2 { color: #2a7fff; }
+    p.warning { color: #ff0000; font-weight: bold; }
     button { margin: 10px; padding: 10px 20px; font-size: 16px;
              border: none; border-radius: 6px; background-color: #2a7fff; color: white; cursor: pointer; }
     button:hover { background-color: #1f5fcc; }
@@ -27,12 +28,16 @@ const wchar_t* update_popup_html = LR"(
 <body>
   <h2>New Krynet Android Version Available!</h2>
   <p id="version-info"></p>
+  <p id="hash-warning" class="warning"></p>
   <button id="download-btn">Download APK</button>
   <button id="close-btn">Close</button>
 
   <script type="text/javascript">
-    function showUpdate(version, url) {
+    function showUpdate(version, url, hashWarning) {
       document.getElementById('version-info').innerText = "Latest version: " + version;
+      if(hashWarning) {
+        document.getElementById('hash-warning').innerText = hashWarning;
+      }
       document.getElementById('download-btn').onclick = function() { window.open(url, "_system"); };
       document.getElementById('close-btn').onclick = function() { window.close(); };
     }
@@ -41,14 +46,14 @@ const wchar_t* update_popup_html = LR"(
 </html>
 )";
 
-// Helper for CURL
+// CURL write callback
 static size_t WriteCallback(char* ptr, size_t size, size_t nmemb, void* userdata) {
     std::string* str = static_cast<std::string*>(userdata);
     str->append(ptr, size * nmemb);
     return size * nmemb;
 }
 
-// Function to check for updates and show popup if needed
+// Check GitHub for updates
 void checkForUpdates(HWINDOW parent) {
     // Load local version.json
     json local_version;
@@ -58,9 +63,10 @@ void checkForUpdates(HWINDOW parent) {
         file.close();
     }
     std::string local_ver = local_version.value("version", "0.0.0");
+    std::string local_hash = local_version.value("hash", "");
     LOGI("Local Android client version: %s", local_ver.c_str());
 
-    // Fetch GitHub release info
+    // Fetch latest release from GitHub
     CURL* curl = curl_easy_init();
     if(!curl) return;
 
@@ -82,32 +88,41 @@ void checkForUpdates(HWINDOW parent) {
         auto release = json::parse(response);
         std::string latest_tag = release.value("tag_name", "");
         std::string apk_url;
+        std::string github_hash;
         bool found_android = false;
 
+        // Find Android asset and its hash
         for(auto& asset : release["assets"]) {
             std::string name = asset.value("name","");
             if(name.find(".apk") != std::string::npos || name.find("Android") != std::string::npos) {
                 apk_url = asset.value("browser_download_url","");
+                github_hash = asset.value("sha256", ""); // Assume SHA256 included in release JSON
                 found_android = true;
                 LOGI("Found Android asset: %s", name.c_str());
                 break;
             }
         }
 
-        if(found_android && latest_tag != local_ver && !apk_url.empty()) {
-            LOGI("New Android release available! Local: %s, GitHub: %s", local_ver.c_str(), latest_tag.c_str());
+        if(found_android && !apk_url.empty() && latest_tag != local_ver) {
+            // Check if hash matches local version
+            std::string hashWarning;
+            if(!github_hash.empty() && github_hash != local_hash) {
+                hashWarning = "⚠ Warning: Your client hash differs from the official release!";
+                LOGI("Hash mismatch detected!");
+            }
 
-            // Create Sciter popup window
+            // Create Sciter popup
             HWINDOW popup = SciterCreateWindow(SW_POPUP | SW_RESIZEABLE | SW_TITLEBAR, nullptr, nullptr, parent);
             SciterLoadHtml(popup, update_popup_html, wcslen(update_popup_html), L"update://popup");
 
-            // Inject version and URL into JS
             std::wstring ws_ver(latest_tag.begin(), latest_tag.end());
             std::wstring ws_url(apk_url.begin(), apk_url.end());
-            std::wstring script = L"showUpdate('" + ws_ver + L"','" + ws_url + L"');";
+            std::wstring ws_warn(hashWarning.begin(), hashWarning.end());
+
+            std::wstring script = L"showUpdate('" + ws_ver + L"','" + ws_url + L"','" + ws_warn + L"');";
             SciterCallScript(popup, script.c_str(), script.size());
         } else {
-            LOGI("Android client is up-to-date or no Android asset found.");
+            LOGI("No new Android release or already up-to-date.");
         }
 
     } catch(...) {
@@ -115,15 +130,15 @@ void checkForUpdates(HWINDOW parent) {
     }
 }
 
+// Start Krynet client
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_krynet_MainActivity_startSciter(JNIEnv* env, jobject thiz)
 {
-    // Disable debug in production
     SciterSetOption(nullptr, SCITER_SET_DEBUG_MODE, FALSE);
     SciterSetOption(nullptr, SCITER_SET_SCRIPT_RUNTIME_FEATURES, ALLOW_SOCKET_IO);
 
-    // Create main window
+    // Main window
     HWINDOW hwnd = SciterCreateWindow(SW_MAIN, nullptr, nullptr, nullptr);
     if(!hwnd) {
         LOGI("Failed to create main Sciter window");
@@ -142,10 +157,10 @@ Java_com_krynet_MainActivity_startSciter(JNIEnv* env, jobject thiz)
         LOGI("Site unreachable, displaying offline fallback");
     }
 
-    // Check for GitHub updates
+    // Check for updates with hash warning
     checkForUpdates(hwnd);
 
-    // Run event loop
+    // Event loop
     MSG msg;
     while(GetMessage(&msg, nullptr, 0, 0)) {
         TranslateMessage(&msg);

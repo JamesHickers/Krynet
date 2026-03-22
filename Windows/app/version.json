@@ -1,6 +1,18 @@
 {
+  "app_name": "Krynet",
   "version": "1.0.0",
   "build": 1,
   "release_date": "2026-03-22",
-  "notes": "Initial stable release"
+  "channel": "stable",
+  "notes": "Initial stable release of Krynet Desktop app.",
+  "update_metadata": {
+    "auto_update_enabled": true,
+    "update_check_interval_hours": 6,
+    "rollback_enabled": true
+  },
+  "files": {
+    "executable": "Krynet.exe",
+    "config": "config.json",
+    "assets": "assets/"
+  }
 }

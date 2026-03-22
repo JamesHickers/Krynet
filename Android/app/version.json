@@ -6,6 +6,7 @@
   "release_date": "2030-03-22T00:00:00Z",
   "author": "Krynet LLC",
   "platform": "Android",
+  "hash": "SHA256:3b2f5e4c7a8d9f0e1b2c3d4e5f67890123456789abcdef0123456789abcdef0",
   "privacy_mode": true,
   "features": {
     "always_online": true,

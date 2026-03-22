@@ -8,7 +8,9 @@
 
 using json = nlohmann::json;
 
-// Embedded HTML for update popup
+// --------------------------
+// Embedded HTML: update popup
+// --------------------------
 const wchar_t* update_html = LR"(
 <html>
 <head>
@@ -37,14 +39,53 @@ function showUpdate(version, url, hashWarning) {
 </html>
 )";
 
+// --------------------------
+// Embedded HTML: site down
+// --------------------------
+const wchar_t* site_down_html = LR"(
+<html>
+<head>
+<style>
+body { font-family:sans-serif; text-align:center; padding:40px; background:#f9f9f9; color:#333; }
+h2 { color:#ff4d4d; }
+p { font-size:16px; }
+</style>
+</head>
+<body>
+<h2>⚠ Sorry, Krynet.ai may be down</h2>
+<p>Check back later</p>
+</body>
+</html>
+)";
+
+// --------------------------
 // CURL callback
+// --------------------------
 static size_t WriteCallback(char* ptr, size_t size, size_t nmemb, void* userdata) {
     std::string* str = static_cast<std::string*>(userdata);
     str->append(ptr, size * nmemb);
     return size * nmemb;
 }
 
-// Check GitHub for updates
+// --------------------------
+// Quick network check for krynet.ai
+// --------------------------
+bool isSiteOnline() {
+    CURL* curl = curl_easy_init();
+    if(!curl) return false;
+
+    curl_easy_setopt(curl, CURLOPT_URL, "https://krynet.ai/web");
+    curl_easy_setopt(curl, CURLOPT_NOBODY, 1L);
+    curl_easy_setopt(curl, CURLOPT_TIMEOUT, 5L);
+    CURLcode res = curl_easy_perform(curl);
+    curl_easy_cleanup(curl);
+
+    return (res == CURLE_OK);
+}
+
+// --------------------------
+// GitHub update check
+// --------------------------
 void checkForUpdates(HWND hwnd) {
     std::ifstream file("version.json");
     if(!file.is_open()) return;
@@ -94,7 +135,6 @@ void checkForUpdates(HWND hwnd) {
                 hashWarning = "⚠ Warning: Your client hash differs from the official release!";
             }
 
-            // Create popup
             HWINDOW popup = SciterCreateWindow(SW_POPUP | SW_RESIZEABLE | SW_TITLEBAR, nullptr, nullptr, hwnd);
             SciterLoadHtml(popup, update_html, wcslen(update_html), L"update://popup");
 
@@ -109,4 +149,36 @@ void checkForUpdates(HWND hwnd) {
     } catch(...) {
         // Failed JSON parse
     }
+}
+
+// --------------------------
+// WinMain - main client
+// --------------------------
+int APIENTRY WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
+{
+    RECT rc = { CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT };
+    HWND hwnd = SciterCreateWindow(
+        SW_MAIN | SW_TITLEBAR | SW_RESIZEABLE | SW_CONTROLS,
+        &rc, nullptr, nullptr, nullptr
+    );
+
+    // Always online, fallback if site is down
+    if(isSiteOnline()) {
+        SciterLoadFile(hwnd, L"https://krynet.ai/web"); // main live client
+    } else {
+        SciterLoadHtml(hwnd, site_down_html, wcslen(site_down_html), L"site://down");
+    }
+
+    // Check for GitHub updates
+    checkForUpdates(hwnd);
+
+    ShowWindow(hwnd, SW_SHOW);
+
+    MSG msg;
+    while(GetMessage(&msg, nullptr, 0, 0)) {
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+    }
+
+    return 0;
 }

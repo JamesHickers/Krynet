@@ -6,6 +6,7 @@
   "release_date": "2030-03-22T00:00:00Z",
   "author": "Krynet LLC",
   "platform": "Linux",
+  "hash": "SHA256:INSERT_OFFICIAL_LINUX_HASH_HERE",
   "privacy_mode": true,
   "features": {
     "always_online": true,
@@ -14,6 +15,6 @@
     "microphone_support": true,
     "camera_support": true,
     "site_down_fallback": true,
-    "software_rendering": true
+    "secure_network_io": true
   }
 }

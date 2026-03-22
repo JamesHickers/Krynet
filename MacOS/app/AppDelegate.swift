@@ -8,18 +8,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var sciterView: SciterLiteView!
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-
         let screenRect = NSScreen.main?.frame ?? NSRect(x: 0, y: 0, width: 800, height: 600)
         window = NSWindow(contentRect: screenRect,
                           styleMask: [.titled, .closable, .resizable, .miniaturizable],
                           backing: .buffered,
                           defer: false)
         window.title = "Krynet MacOS Client"
-        
+
         sciterView = SciterLiteView(frame: window.contentView!.bounds)
         sciterView.autoresizingMask = [.width, .height]
         sciterView.backgroundColor = .black
-        
+
         window.contentView?.addSubview(sciterView)
         window.makeKeyAndOrderFront(nil)
 
@@ -46,17 +45,34 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    // MARK: - Load Krynet Web Client
+    // MARK: - Load Krynet Web Client (with offline fallback)
     private func loadKrynet() {
         if let htmlPath = Bundle.main.path(forResource: "krynet", ofType: "htm") {
             let htmlURL = URL(fileURLWithPath: htmlPath)
             sciterView.loadUrl(URLRequest(url: htmlURL))
         } else if let url = URL(string: "https://krynet.ai/web") {
-            sciterView.loadUrl(URLRequest(url: url))
+            let request = URLRequest(url: url)
+            let task = URLSession.shared.dataTask(with: request) { data, _, error in
+                DispatchQueue.main.async {
+                    if let _ = data, error == nil {
+                        self.sciterView.loadUrl(request)
+                    } else {
+                        let offlineHTML = """
+                        <html>
+                        <body style='text-align:center;margin-top:20%;font-family:sans-serif;'>
+                            <h1>Sorry, Krynet.ai may be down, check back later</h1>
+                        </body>
+                        </html>
+                        """
+                        self.sciterView.loadHtml(offlineHTML, baseUrl: URL(string: "offline://fallback"))
+                    }
+                }
+            }
+            task.resume()
         }
     }
 
-    // MARK: - Update Check
+    // MARK: - GitHub Update Check (MacOS only)
     private func checkForUpdates() {
         guard let local = versionInfo,
               let url = URL(string: "https://api.github.com/repos/Krynet-LLC/Krynet/releases/latest") else { return }
@@ -80,10 +96,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                         }
                     }
 
-                    if let latestTag = latestTag as String?,
-                       let macUrl = macAssetUrl,
-                       latestTag != local.version {
-
+                    if let macUrl = macAssetUrl, latestTag != local.version {
                         var hashWarning = ""
                         if let githubHash = githubHash, githubHash != local.hash {
                             hashWarning = "⚠ Warning: This client hash differs from the official release!"
@@ -101,7 +114,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         task.resume()
     }
 
-    // MARK: - Embedded HTML Popup
+    // MARK: - Update Popup (Embedded HTML)
     private func showUpdatePopup(version: String, url: String, hashWarning: String) {
         let html = """
         <html>
